@@ -41,6 +41,7 @@ public class CategoryServiceImpl implements ICategoryService{
     @Override
     @Transactional(readOnly = true)
     public ResponseEntity<CategoryResponseRest> findById(Long id) {
+
         CategoryResponseRest response = new CategoryResponseRest();
         List<Category> list = new ArrayList<>();
 
@@ -56,6 +57,31 @@ public class CategoryServiceImpl implements ICategoryService{
             }
         } catch (Exception e) {
             response.setMetadata("Resposta nok", "-1", "Error querying by id");
+            e.getStackTrace();
+            return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.OK);
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<CategoryResponseRest> save(Category category) {
+
+        CategoryResponseRest response = new CategoryResponseRest();
+        List<Category> list = new ArrayList<>();
+
+        try {
+            Category categorySaved = repository.save(category);
+            if (categorySaved != null) {
+                list.add(categorySaved);
+                response.getCategoryResponse().setCategory(list);
+                response.setMetadata("Resposta OK", "00", "Category Saved");
+            } else {
+                response.setMetadata("Resposta nok", "-1", "unsaved category");
+                return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            response.setMetadata("Resposta nok", "-1", "Error saving category");
             e.getStackTrace();
             return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }

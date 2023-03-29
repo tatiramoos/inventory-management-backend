@@ -1,10 +1,12 @@
 package com.tati.inventory.service;
 
+import com.tati.inventory.model.Category;
 import com.tati.inventory.response.CategoryResponseRest;
 import org.springframework.http.ResponseEntity;
 
 public interface ICategoryService {
 
-    public ResponseEntity<CategoryResponseRest> findAll();
-    public ResponseEntity<CategoryResponseRest> findById(Long id);
+    ResponseEntity<CategoryResponseRest> findAll();
+    ResponseEntity<CategoryResponseRest> findById(Long id);
+    ResponseEntity<CategoryResponseRest> save (Category category);
 }

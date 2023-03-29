@@ -1,12 +1,10 @@
 package com.tati.inventory.controller;
 
+import com.tati.inventory.model.Category;
 import com.tati.inventory.response.CategoryResponseRest;
 import com.tati.inventory.service.ICategoryService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -27,5 +25,10 @@ public class CategoryController {
     @GetMapping("/categories/{id}")
     public ResponseEntity<CategoryResponseRest> categoriesById(@PathVariable Long id) {
         return service.findById(id);
+    }
+
+    @PostMapping("/categories")
+    public ResponseEntity<CategoryResponseRest> save(@RequestBody Category category) {
+        return service.save(category);
     }
 }
