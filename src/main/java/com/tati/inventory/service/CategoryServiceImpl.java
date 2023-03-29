@@ -87,4 +87,45 @@ public class CategoryServiceImpl implements ICategoryService{
         }
         return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.OK);
     }
+
+    @Override
+    @Transactional
+    public ResponseEntity<CategoryResponseRest> update(Category category, Long id) {
+        CategoryResponseRest response = new CategoryResponseRest();
+        List<Category> list = new ArrayList<>();
+
+        try {
+            Optional<Category> categoryOptional = repository.findById(id);
+
+            if (categoryOptional.isPresent()) {
+                categoryOptional.get().setName(category.getName());
+                categoryOptional.get().setDescription(category.getDescription());
+
+                Category categoryToUpdate = repository.save(categoryOptional.get());
+
+                if (categoryToUpdate != null) {
+                    list.add(categoryToUpdate);
+                    response.getCategoryResponse().setCategory(list);
+                    response.setMetadata("Resposta OK", "00", "Category Updated");
+                } else {
+                    response.setMetadata("Resposta nok", "-1", "Category Not Updated");
+                    return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.BAD_REQUEST);
+                }
+            } else {
+                response.setMetadata("Resposta nok", "-1", "Category Not Found");
+                return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.NOT_FOUND);
+            }
+
+            /*if (categorySaved != null) {
+
+            } else {
+                response.setMetadata("Resposta nok", "-1", "unsaved category");
+                return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.BAD_REQUEST);*/
+        } catch (Exception e) {
+            response.setMetadata("Resposta nok", "-1", "Error updating category");
+            e.getStackTrace();
+            return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.OK);
+    }
 }

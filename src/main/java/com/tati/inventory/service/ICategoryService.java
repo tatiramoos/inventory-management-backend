@@ -9,4 +9,5 @@ public interface ICategoryService {
     ResponseEntity<CategoryResponseRest> findAll();
     ResponseEntity<CategoryResponseRest> findById(Long id);
     ResponseEntity<CategoryResponseRest> save (Category category);
+    ResponseEntity<CategoryResponseRest> update (Category category, Long id);
 }
