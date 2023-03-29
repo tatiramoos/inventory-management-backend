@@ -36,4 +36,9 @@ public class CategoryController {
     public ResponseEntity<CategoryResponseRest> update(@RequestBody Category category, @PathVariable Long id) {
         return service.update(category, id);
     }
+
+    @DeleteMapping("/categories/{id}")
+    public ResponseEntity<CategoryResponseRest> delete(@PathVariable Long id) {
+        return service.deleteById(id);
+    }
 }
